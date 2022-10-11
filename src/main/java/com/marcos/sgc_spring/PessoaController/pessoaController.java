@@ -5,9 +5,15 @@ import com.marcos.sgc_spring.PessoaRepositorio.pessoaRepositorio;
 import com.marcos.sgc_spring.PessoaRepositorio.pessoaRepositorioCustom;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,8 +81,12 @@ public class pessoaController {
     }
 
     @GetMapping("/custom")
-    public List<pessoaModel> findCustom(@RequestParam (value = "nome",required = false) String nome , @RequestParam (value = "sexo",required = false)String sexo){
-        return pessoaRepositorioCustom.findCustom(nome,sexo);
+    public List<pessoaModel> findCustom(@RequestParam (value = "nome",required = false) String nome ,
+                                        @RequestParam (value = "sexo",required = false)String sexo,
+                                        @RequestParam (value = "dtNasc",required = false)@DateTimeFormat(pattern="yyyy-MM-dd") LocalDate dtNasc
+                                        )  {
+
+        return pessoaRepositorioCustom.findCustom(nome,dtNasc,sexo);
     }
 
 

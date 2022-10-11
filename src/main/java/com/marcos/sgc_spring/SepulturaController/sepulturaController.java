@@ -3,6 +3,7 @@ package com.marcos.sgc_spring.SepulturaController;
 
 import com.marcos.sgc_spring.SepulturaModel.sepulturaModel;
 import com.marcos.sgc_spring.SepulturaRepositorio.sepulturaRepositorio;
+import com.marcos.sgc_spring.SepulturaRepositorio.sepulturaRepositorioCustom;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import java.util.Optional;
 public class sepulturaController {
 
     private sepulturaRepositorio sepulturarepositorio;
+    private sepulturaRepositorioCustom sepulturaRepositorioCustom;
 
     @GetMapping
     public List<sepulturaModel> list() {
@@ -63,6 +65,13 @@ public class sepulturaController {
                             return ResponseEntity.ok().build();
                         }
                 ).orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/custom")
+    public List<sepulturaModel> findCustom(@RequestParam (value = "codigo",required = false)String codigo,
+                                           @RequestParam(value = "descricao",required = false)String descricao,
+                                           @RequestParam(value = "cemiterio",required = false)String cemiterio){
+        return sepulturaRepositorioCustom.findSepCustom(codigo,descricao,cemiterio);
     }
 
 

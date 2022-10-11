@@ -2,6 +2,7 @@ package com.marcos.sgc_spring.FunerariaController;
 
 import com.marcos.sgc_spring.FunerariaModel.funerariaModel;
 import com.marcos.sgc_spring.FunerariaRepositorio.funerariaRepositorio;
+import com.marcos.sgc_spring.FunerariaRepositorio.funerariaRepositorioCustom;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import java.util.Optional;
 public class funerariaController {
 
     private funerariaRepositorio funerariaRepositorio;
+    private funerariaRepositorioCustom funerariaRepositorioCustom;
 
     @GetMapping
     public List<funerariaModel> list(){
@@ -61,6 +63,14 @@ public class funerariaController {
     @GetMapping("/codfun")
     public int lastCod(){
         return funerariaRepositorio.findCodFun();
+    }
+
+    @GetMapping("/custom")
+    public List<funerariaModel> findFunCustom(@RequestParam(value = "codigo",required = false) String codigo,
+                                              @RequestParam(value = "nome",required = false)String nome,
+                                              @RequestParam(value = "cidade",required = false)String cidade
+    ){
+        return funerariaRepositorioCustom.findFunCustom(codigo,nome,cidade);
     }
 
 }

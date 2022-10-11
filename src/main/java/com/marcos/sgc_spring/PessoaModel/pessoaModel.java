@@ -25,7 +25,7 @@ public class pessoaModel {
     @JsonFormat(pattern = "dd/MM/yyyy")
     LocalDate falnascimento;
     String falnaturalidade;
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     LocalDate falfalecimento;
     String falmedresp;
 
