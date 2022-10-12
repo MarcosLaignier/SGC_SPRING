@@ -21,7 +21,7 @@ public class funerariaRepositorioCustom {
         String query = "select F from funerariaModel AS F where 1=1";
         Map<String,String> ParamMap = new HashMap<>();
         ParamMap.put(codigo," and F.funcodigo = :codigo");
-        ParamMap.put(nome," and F.fundescricao = :nome");
+        ParamMap.put(nome," and F.fundescricao like :nome");
         ParamMap.put(cidade," and F.funcidade = :cidade");
         for(Map.Entry<String, String> entry : ParamMap.entrySet()){
             if (entry.getKey()!=null){
@@ -35,7 +35,7 @@ public class funerariaRepositorioCustom {
             queryMontada.setParameter("codigo",Integer.parseInt(codigo));
         }
         if (nome !=null){
-            queryMontada.setParameter("nome",nome);
+            queryMontada.setParameter("nome","%"+nome+"%");
         }
         if (cidade!=null){
             queryMontada.setParameter("cidade",cidade);

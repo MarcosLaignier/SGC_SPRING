@@ -25,7 +25,7 @@ public class pessoaRepositorioCustom {
         String query = "select P from pessoaModel  as P where 1=1 ";
 
         Map<String, String> dados = new HashMap<>();
-        dados.put(nome, " and P.falnome=:nome ");
+        dados.put(nome, " and P.falnome like :nome ");
         dados.put(sexo, " and P.falsexo=:sexo ");
         for (Map.Entry<String, String> entry : dados.entrySet()) {
             if (entry.getKey() != null) {
@@ -39,7 +39,7 @@ public class pessoaRepositorioCustom {
         var queryMontada = entityManager.createQuery(query, pessoaModel.class);
 
         if (nome != null) {
-            queryMontada.setParameter("nome", nome);
+            queryMontada.setParameter("nome","%"+nome+"%");
         }
 
         if (sexo != null) {

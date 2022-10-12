@@ -24,7 +24,7 @@ public class sepultamentoRepositorioCustom {
 
         Map<String,String> map = new HashMap<>();
 
-        map.put(pessoa,"and P.sepulfalecido = :pessoa");
+        map.put(pessoa,"and P.sepulfalecido like :pessoa");
         map.put(cpf," and P.sepulcpffal = :cpf");
         map.put(Cemiterio," and P.sepulcemiterio = :Cemiterio");
         for( Map.Entry<String,String> entry : map.entrySet()){
@@ -52,7 +52,7 @@ public class sepultamentoRepositorioCustom {
 
 
         if(pessoa !=null ){
-            q.setParameter("pessoa",pessoa);
+            q.setParameter("pessoa","%"+pessoa+"%");
         }
 
         if (cpf!=null ){

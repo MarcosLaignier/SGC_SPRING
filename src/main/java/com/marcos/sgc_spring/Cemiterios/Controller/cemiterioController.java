@@ -2,6 +2,7 @@ package com.marcos.sgc_spring.Cemiterios.Controller;
 
 import com.marcos.sgc_spring.CemiterioModel.cemiterioModel;
 import com.marcos.sgc_spring.CemiterioRepositorio.cemiterioRepositorio;
+import com.marcos.sgc_spring.CemiterioRepositorio.cemiterioRepositorioCustom;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ import java.util.Optional;
 public class cemiterioController {
 
     private cemiterioRepositorio cemiterioRepositorio;
-
+    private cemiterioRepositorioCustom cemiterioRepositorioCustom;
 
     @GetMapping
     public List<cemiterioModel> list() {
@@ -76,6 +77,13 @@ public class cemiterioController {
     @GetMapping("/t")
     public String teste(@RequestBody int nameCemiterio){
         return cemiterioRepositorio.num(nameCemiterio);
+    }
+
+    @GetMapping("/custom")
+    public List<cemiterioModel> findCustom(@RequestParam(value = "codigo",required = false)String codigo,
+                                           @RequestParam(value = "nome",required = false)String nome,
+                                           @RequestParam(value = "responsavel",required = false)String responsavel){
+        return cemiterioRepositorioCustom.findUndCustom(codigo,nome,responsavel);
     }
 
 

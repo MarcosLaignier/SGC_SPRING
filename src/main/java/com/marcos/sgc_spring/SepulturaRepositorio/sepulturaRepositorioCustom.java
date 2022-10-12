@@ -22,7 +22,7 @@ public class sepulturaRepositorioCustom {
 
         Map<String,String> paramMap=new HashMap<>();
         paramMap.put(codigo," and S.sepcodigo = :codigo");
-        paramMap.put(descricao," and S.sepdescricao = :descricao");
+        paramMap.put(descricao," and (S.sepdescricao) like :descricao");
         paramMap.put(cemiterio," and S.sepcemiterio= :cemiterio");
 
         for(Map.Entry<String,String> entry: paramMap.entrySet()){
@@ -37,7 +37,7 @@ public class sepulturaRepositorioCustom {
             queryMontada.setParameter("codigo",Integer.parseInt(codigo));
         }
         if (descricao != null){
-            queryMontada.setParameter("descricao",descricao);
+            queryMontada.setParameter("descricao","%"+descricao+"%");
         }
         if (cemiterio != null){
             queryMontada.setParameter("cemiterio",cemiterio);
