@@ -22,10 +22,10 @@ public class pessoaModel {
     String falnome;
     String falcpf;
     String falsexo;
-    @JsonFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     LocalDate falnascimento;
     String falnaturalidade;
-    @JsonFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     LocalDate falfalecimento;
     String falmedresp;
 

@@ -36,7 +36,7 @@ public class pessoaRepositorioCustom {
             query +=" and P.falnascimento=:dtNasc ";
         }
 
-        var queryMontada = entityManager.createQuery(query, pessoaModel.class);
+        var queryMontada = entityManager.createQuery(query+" order by P.falcodigo", pessoaModel.class);
 
         if (nome != null) {
             queryMontada.setParameter("nome","%"+nome+"%");

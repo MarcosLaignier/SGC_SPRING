@@ -29,7 +29,7 @@ public class cemiterioRepositorioCustom {
             }
         }
 
-        var queryMontada = entityManager.createQuery(query);
+        var queryMontada = entityManager.createQuery(query+" order by U.undcodigo");
 
         if(codigo != null){
             queryMontada.setParameter("codigo",Integer.parseInt(codigo));

@@ -19,4 +19,5 @@ public class cemiterioModel {
     String undcidade;
     String undestado;
     String undresponsavel;
+    boolean status;
 }

@@ -31,7 +31,7 @@ public class sepulturaRepositorioCustom {
             }
         }
 
-        var queryMontada = entityManager.createQuery(query,sepulturaModel.class);
+        var queryMontada = entityManager.createQuery(query+" order by S.sepcodigo",sepulturaModel.class);
 
         if(codigo!=null){
             queryMontada.setParameter("codigo",Integer.parseInt(codigo));

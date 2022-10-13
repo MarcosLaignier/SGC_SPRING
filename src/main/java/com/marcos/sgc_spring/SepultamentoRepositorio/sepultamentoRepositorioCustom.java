@@ -48,7 +48,7 @@ public class sepultamentoRepositorioCustom {
 //            condicaoInicial = " and ";
 //        }
 
-        var q = entityManager.createQuery(query,sepultamentoModel.class);
+        var q = entityManager.createQuery(query+" order by P.sepulcodigo",sepultamentoModel.class);
 
 
         if(pessoa !=null ){

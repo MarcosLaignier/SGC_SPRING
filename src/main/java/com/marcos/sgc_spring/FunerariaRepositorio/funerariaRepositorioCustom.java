@@ -29,7 +29,7 @@ public class funerariaRepositorioCustom {
             }
         }
 
-        var queryMontada = entityManager.createQuery(query,funerariaModel.class);
+        var queryMontada = entityManager.createQuery(query+ " order by F.funcodigo",funerariaModel.class);
 
         if (codigo !=null){
             queryMontada.setParameter("codigo",Integer.parseInt(codigo));
