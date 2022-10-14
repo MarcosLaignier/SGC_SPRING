@@ -32,6 +32,7 @@ public class configuracaoController {
                     response.setSGCMUNICIPIO(dados.getSGCMUNICIPIO());
                     response.setSGCPATHIMG(dados.getSGCPATHIMG());
                     response.setSGCPATHLOGO(dados.getSGCPATHLOGO());
+                    response.setSGCTIPOMUNICIPIO(dados.getSGCTIPOMUNICIPIO());
                     configuracaoModel updateC = configuracaoRepositorio.save(response);;
                     System.out.println(updateC);
 

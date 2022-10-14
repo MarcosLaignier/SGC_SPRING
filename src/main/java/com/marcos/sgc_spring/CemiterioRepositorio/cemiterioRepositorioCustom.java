@@ -16,13 +16,14 @@ public class cemiterioRepositorioCustom {
         this.entityManager = entityManager;
     }
 
-    public List<cemiterioModel> findUndCustom(String codigo, String nome, String responsavel) {
+    public List<cemiterioModel> findUndCustom(String codigo, String nome, String responsavel,String status) {
         String query="select U from cemiterioModel as U where 1=1";
 
         Map<String,String> paramMap = new HashMap<>();
         paramMap.put(codigo," and undcodigo =:codigo");
         paramMap.put(nome," and undnome like :nome ");
         paramMap.put(responsavel," and undresponsavel like :responsavel");
+        paramMap.put(status, " and status = :status");
         for (Map.Entry<String,String> entry:paramMap.entrySet()){
             if(entry.getKey()!=null){
                 query+=entry.getValue();
@@ -41,6 +42,9 @@ public class cemiterioRepositorioCustom {
 
         if (responsavel != null){
             queryMontada.setParameter("responsavel","%"+responsavel+"%");
+        }
+        if (status != null){
+            queryMontada.setParameter("status",Boolean.parseBoolean(status));
         }
 
         return queryMontada.getResultList();

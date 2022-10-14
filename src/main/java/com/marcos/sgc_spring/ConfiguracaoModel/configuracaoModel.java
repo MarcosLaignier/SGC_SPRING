@@ -15,5 +15,6 @@ public class configuracaoModel {
     String SGCMUNICIPIO;
     String SGCPATHLOGO;
     String SGCPATHIMG;
+    String SGCTIPOMUNICIPIO;
 
 }

@@ -69,6 +69,7 @@ public class cemiterioController {
                     data.setUndcidade(cemiterio.getUndcidade());
                     data.setUndestado(cemiterio.getUndestado());
                     data.setUndresponsavel(cemiterio.getUndresponsavel());
+                    data.setStatus(cemiterio.isStatus());
                     cemiterioModel updateC = cemiterioRepositorio.save(data);
                     return ResponseEntity.ok().body(updateC);
                 }).orElse(ResponseEntity.notFound().build());
@@ -82,8 +83,9 @@ public class cemiterioController {
     @GetMapping("/custom")
     public List<cemiterioModel> findCustom(@RequestParam(value = "codigo",required = false)String codigo,
                                            @RequestParam(value = "nome",required = false)String nome,
-                                           @RequestParam(value = "responsavel",required = false)String responsavel){
-        return cemiterioRepositorioCustom.findUndCustom(codigo,nome,responsavel);
+                                           @RequestParam(value = "responsavel",required = false)String responsavel,
+                                           @RequestParam(value = "status",required = false)String status){
+        return cemiterioRepositorioCustom.findUndCustom(codigo,nome,responsavel,status);
     }
 
 
