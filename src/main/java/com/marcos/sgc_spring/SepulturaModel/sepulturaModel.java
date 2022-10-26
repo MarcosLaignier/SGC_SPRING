@@ -1,10 +1,9 @@
 package com.marcos.sgc_spring.SepulturaModel;
 
+import com.marcos.sgc_spring.CemiterioModel.cemiterioModel;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -12,8 +11,11 @@ import javax.persistence.Table;
 public class sepulturaModel {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     int sepcodigo;
-//    int SEPIDCEMITERIO;
+    @Column(unique = true)
     String sepdescricao;
     String sepcemiterio;
+    @ManyToOne(optional = false)
+    cemiterioModel cemiterio;
 }

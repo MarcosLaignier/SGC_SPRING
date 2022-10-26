@@ -4,10 +4,14 @@ import com.marcos.sgc_spring.PessoaModel.pessoaModel;
 import com.marcos.sgc_spring.PessoaRepositorio.pessoaRepositorio;
 import com.marcos.sgc_spring.PessoaRepositorio.pessoaRepositorioCustom;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -36,16 +40,20 @@ public class pessoaController {
     }
 
     @PostMapping
-    public pessoaModel insert(@RequestBody pessoaModel pessoa) {
-
-        return pessoaRepositorio.save(pessoa);
+    @ResponseStatus(HttpStatus.CREATED)
+    public void insert(@RequestBody pessoaModel pessoa) {
+        try {
+            pessoaRepositorio.save(pessoa);
+        } catch (DataIntegrityViolationException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        }
     }
 
     @PutMapping("/alter/{falcodigo}")
     public ResponseEntity alter(@PathVariable int falcodigo, @RequestBody pessoaModel pessoa) {
         return pessoaRepositorio.findById(falcodigo).map(
                 response -> {
-                                        response.setFalcodigo(pessoa.getFalcodigo());
+                    response.setFalcodigo(pessoa.getFalcodigo());
                     response.setFalnome(pessoa.getFalnome());
                     response.setFalcpf(pessoa.getFalcpf());
                     response.setFalsexo(pessoa.getFalsexo());
@@ -61,34 +69,40 @@ public class pessoaController {
     }
 
     @DeleteMapping("/{falcodigo}")
-    public ResponseEntity delete(@PathVariable int falcodigo){
-        return pessoaRepositorio.findById(falcodigo).map(
-                response ->{
-                    pessoaRepositorio.deleteById(falcodigo);
-                    return ResponseEntity.ok().build();
-                }
-        ).orElse(ResponseEntity.notFound().build());
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void delete(@PathVariable int falcodigo) {
+        try {
+            pessoaRepositorio.deleteById(falcodigo);
+        } catch (DataIntegrityViolationException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, String.format("Pessoa ja em uso, Impossivel Exclusao"));
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Entidade nao encontrada"));
+        }
+    }
+
+    @GetMapping("/name/{falnome}")
+    public pessoaModel getByNome(@PathVariable String falnome) {
+        return pessoaRepositorio.findByFalnome(falnome);
     }
 
     @GetMapping("/cod")
-    public int lastCod(){
+    public int lastCod() {
         return pessoaRepositorio.lastCod();
     }
 
     @GetMapping("/nameFal")
-    public List<pessoaModel> nameFal(@RequestParam String falnome){
+    public List<pessoaModel> nameFal(@RequestParam String falnome) {
         return pessoaRepositorio.findByFalnomeContains(falnome);
     }
 
     @GetMapping("/custom")
-    public List<pessoaModel> findCustom(@RequestParam (value = "nome",required = false) String nome ,
-                                        @RequestParam (value = "sexo",required = false)String sexo,
-                                        @RequestParam (value = "dtNasc",required = false)@DateTimeFormat(pattern="yyyy-MM-dd") LocalDate dtNasc
-                                        )  {
+    public List<pessoaModel> findCustom(@RequestParam(value = "nome", required = false) String nome,
+                                        @RequestParam(value = "sexo", required = false) String sexo,
+                                        @RequestParam(value = "dtNasc", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dtNasc
+    ) {
 
-        return pessoaRepositorioCustom.findCustom(nome,dtNasc,sexo);
+        return pessoaRepositorioCustom.findCustom(nome, dtNasc, sexo);
     }
-
 
 
 }

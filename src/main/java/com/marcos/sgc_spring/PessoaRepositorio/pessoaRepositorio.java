@@ -25,5 +25,7 @@ public interface pessoaRepositorio extends JpaRepository<pessoaModel, Integer> {
 
     List<pessoaModel> findByFalnomeContains(String name);
 
+    pessoaModel findByFalnome(String nome);
+
 
 }

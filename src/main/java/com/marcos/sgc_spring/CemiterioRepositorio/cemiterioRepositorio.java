@@ -21,5 +21,7 @@ public interface cemiterioRepositorio extends JpaRepository<cemiterioModel,Integ
     String num(
             @Param("name") int name
     );
+
+    cemiterioModel findByUndnome(String nome) ;
 }
 

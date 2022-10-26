@@ -18,8 +18,10 @@ import java.util.Date;
 public class pessoaModel {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     int falcodigo;
     String falnome;
+    @Column(unique = true)
     String falcpf;
     String falsexo;
     @JsonFormat(pattern = "yyyy-MM-dd")

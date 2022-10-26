@@ -32,22 +32,6 @@ public class sepultamentoRepositorioCustom {
                 query+=entry.getValue();
             }
         }
-
-//        if(pessoa !=null ){
-//            query += condicaoInicial + "P.sepulfalecido = :pessoa";
-//            condicaoInicial = " and ";
-//        }
-//
-//        if (cpf!=null ){
-//            query += condicaoInicial + "P.sepulcpffal = :cpf";
-//            condicaoInicial = " and ";
-//        }
-//
-//        if (Cemiterio!=null ){
-//            query += condicaoInicial + "P.sepulcemiterio = :Cemiterio";
-//            condicaoInicial = " and ";
-//        }
-
         var q = entityManager.createQuery(query+" order by P.sepulcodigo",sepultamentoModel.class);
 
 

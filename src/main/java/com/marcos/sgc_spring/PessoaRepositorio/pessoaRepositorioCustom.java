@@ -21,7 +21,7 @@ public class pessoaRepositorioCustom {
         this.entityManager = entityManager;
     }
 
-        public List<pessoaModel> findCustom(String nome , LocalDate dtNasc , String sexo){
+    public List<pessoaModel> findCustom(String nome , LocalDate dtNasc , String sexo){
         String query = "select P from pessoaModel  as P where 1=1 ";
 
         Map<String, String> dados = new HashMap<>();
@@ -46,9 +46,9 @@ public class pessoaRepositorioCustom {
             queryMontada.setParameter("sexo", sexo);
 
         }
-            if(dtNasc != null){
-                queryMontada.setParameter("dtNasc",dtNasc);
-            }
+        if(dtNasc != null){
+            queryMontada.setParameter("dtNasc",dtNasc);
+        }
 
 
         return queryMontada.getResultList();

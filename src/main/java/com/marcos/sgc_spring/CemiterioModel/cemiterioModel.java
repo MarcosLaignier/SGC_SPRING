@@ -11,8 +11,9 @@ import javax.persistence.*;
 public class cemiterioModel {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     int undcodigo;
+    @Column(unique = true)
     String undnome;
     String undendereco;
     int undnumero;

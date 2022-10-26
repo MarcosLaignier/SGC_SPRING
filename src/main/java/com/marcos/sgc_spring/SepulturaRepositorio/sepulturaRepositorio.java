@@ -11,4 +11,5 @@ public interface sepulturaRepositorio extends JpaRepository<sepulturaModel,Integ
     @Query("select MAX (sep.sepcodigo) from sepulturaModel sep ")
     int findCod();
 
+    sepulturaModel findBySepdescricao(String sepdescricao);
 }

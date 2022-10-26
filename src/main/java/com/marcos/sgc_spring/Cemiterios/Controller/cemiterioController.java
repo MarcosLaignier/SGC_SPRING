@@ -4,9 +4,14 @@ import com.marcos.sgc_spring.CemiterioModel.cemiterioModel;
 import com.marcos.sgc_spring.CemiterioRepositorio.cemiterioRepositorio;
 import com.marcos.sgc_spring.CemiterioRepositorio.cemiterioRepositorioCustom;
 import lombok.AllArgsConstructor;
+import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,29 +37,43 @@ public class cemiterioController {
 
     }
 
+    @GetMapping("/nome/{undnome}")
+    public cemiterioModel findByNome(@PathVariable String undnome) {
+        return cemiterioRepositorio.findByUndnome(undnome);
+    }
+
     @GetMapping("/cod")
-    public int listCod(){
+    public int listCod() {
         return cemiterioRepositorio.findcod();
     }
 
     @GetMapping("/nameCemiterios")
-    public List<String> listNameCemiterio(){
-        return  cemiterioRepositorio.findnameCemiterio();
+    public List<String> listNameCemiterio() {
+        return cemiterioRepositorio.findnameCemiterio();
     }
 
     @PostMapping
-    public cemiterioModel Create(@RequestBody cemiterioModel cemiterio) {
-        cemiterioRepositorio.save(cemiterio);
-        return cemiterio;
+    @ResponseStatus(HttpStatus.CREATED)
+    public void Create(@RequestBody cemiterioModel cemiterio) {
+        try {
+            cemiterioRepositorio.save(cemiterio);
+        } catch (DataIntegrityViolationException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        }
     }
 
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @DeleteMapping("/{undcodigo}")
-    public ResponseEntity delete(@PathVariable int undcodigo) {
-        return cemiterioRepositorio.findById(undcodigo)
-                .map(record -> {
-                    cemiterioRepositorio.deleteById(undcodigo);
-                    return ResponseEntity.ok().build();
-                }).orElse(ResponseEntity.notFound().build());
+    public void delete(@PathVariable int undcodigo) {
+        try {
+            cemiterioRepositorio.deleteById(undcodigo);
+
+        } catch (DataIntegrityViolationException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, String.format("Cemiterio em uso, Impossivel Exclusao!"));
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Entidade nao encontrada"));
+        }
+
     }
 
 
@@ -62,7 +81,6 @@ public class cemiterioController {
     public ResponseEntity put(@PathVariable int undcodigo, @RequestBody cemiterioModel cemiterio) {
         return cemiterioRepositorio.findById(undcodigo).map(
                 data -> {
-                    data.setUndcodigo(cemiterio.getUndcodigo());
                     data.setUndnome(cemiterio.getUndnome());
                     data.setUndendereco(cemiterio.getUndendereco());
                     data.setUndnumero(cemiterio.getUndnumero());
@@ -75,17 +93,13 @@ public class cemiterioController {
                 }).orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/t")
-    public String teste(@RequestBody int nameCemiterio){
-        return cemiterioRepositorio.num(nameCemiterio);
-    }
 
     @GetMapping("/custom")
-    public List<cemiterioModel> findCustom(@RequestParam(value = "codigo",required = false)String codigo,
-                                           @RequestParam(value = "nome",required = false)String nome,
-                                           @RequestParam(value = "responsavel",required = false)String responsavel,
-                                           @RequestParam(value = "status",required = false)String status){
-        return cemiterioRepositorioCustom.findUndCustom(codigo,nome,responsavel,status);
+    public List<cemiterioModel> findCustom(@RequestParam(value = "codigo", required = false) String codigo,
+                                           @RequestParam(value = "nome", required = false) String nome,
+                                           @RequestParam(value = "responsavel", required = false) String responsavel,
+                                           @RequestParam(value = "status", required = false) String status) {
+        return cemiterioRepositorioCustom.findUndCustom(codigo, nome, responsavel, status);
     }
 
 

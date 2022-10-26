@@ -5,9 +5,13 @@ import com.marcos.sgc_spring.SepulturaModel.sepulturaModel;
 import com.marcos.sgc_spring.SepulturaRepositorio.sepulturaRepositorio;
 import com.marcos.sgc_spring.SepulturaRepositorio.sepulturaRepositorioCustom;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,8 +29,6 @@ public class sepulturaController {
         return sepulturarepositorio.findAll(Sort.by(Sort.Direction.ASC, "sepcodigo"));
     }
 
-    ;
-
     @GetMapping("/{id}")
     public Optional<sepulturaModel> listId(@PathVariable int id) {
         return sepulturarepositorio.findById(id);
@@ -37,18 +39,30 @@ public class sepulturaController {
         return sepulturarepositorio.findCod();
     }
 
+    @GetMapping("/nome/{sepdescricao}")
+    public sepulturaModel findByName(@PathVariable String sepdescricao) {
+        return sepulturarepositorio.findBySepdescricao(sepdescricao);
+    }
+
+
     @PostMapping
-    public sepulturaModel insert(@RequestBody sepulturaModel dadosSepultura) {
-        return sepulturarepositorio.save(dadosSepultura);
+    @ResponseStatus(HttpStatus.CREATED)
+    public void insert(@RequestBody sepulturaModel dadosSepultura) {
+        try {
+            sepulturarepositorio.save(dadosSepultura);
+        } catch (DataIntegrityViolationException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        }
     }
 
     @PutMapping("/alter/{sepcodigo}")
-    public ResponseEntity alterSepultura(@PathVariable int sepcodigo ,@RequestBody sepulturaModel sepultura){
+    public ResponseEntity alterSepultura(@PathVariable int sepcodigo, @RequestBody sepulturaModel sepultura) {
         return sepulturarepositorio.findById(sepcodigo).map(
-                response ->{
-                    response.setSepcodigo(sepultura.getSepcodigo());
+                response -> {
+//                    response.setSepcodigo(sepultura.getSepcodigo());
                     response.setSepdescricao(sepultura.getSepdescricao());
                     response.setSepcemiterio(sepultura.getSepcemiterio());
+                    response.setCemiterio(sepultura.getCemiterio());
                     sepulturaModel updateS = response;
                     sepulturarepositorio.save(updateS);
                     return ResponseEntity.ok().build();
@@ -58,20 +72,22 @@ public class sepulturaController {
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable int id) {
-        return sepulturarepositorio.findById(id)
-                .map(response -> {
-                            sepulturarepositorio.deleteById(id);
-                            return ResponseEntity.ok().build();
-                        }
-                ).orElse(ResponseEntity.notFound().build());
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void delete(@PathVariable int id) {
+        try {
+            sepulturarepositorio.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, String.format("Sepultura ja em uso, Impossivel Exclusao!"));
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Entidade não encontrada!"));
+        }
     }
 
     @GetMapping("/custom")
-    public List<sepulturaModel> findCustom(@RequestParam (value = "codigo",required = false)String codigo,
-                                           @RequestParam(value = "descricao",required = false)String descricao,
-                                           @RequestParam(value = "cemiterio",required = false)String cemiterio){
-        return sepulturaRepositorioCustom.findSepCustom(codigo,descricao,cemiterio);
+    public List<sepulturaModel> findCustom(@RequestParam(value = "codigo", required = false) String codigo,
+                                           @RequestParam(value = "descricao", required = false) String descricao,
+                                           @RequestParam(value = "cemiterio", required = false) String cemiterio) {
+        return sepulturaRepositorioCustom.findSepCustom(codigo, descricao, cemiterio);
     }
 
 
