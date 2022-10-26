@@ -44,6 +44,11 @@ public class sepulturaController {
         return sepulturarepositorio.findBySepdescricao(sepdescricao);
     }
 
+    @GetMapping("/sep/{sepcemiterio}")
+    public sepulturaModel[] findByCemiterio(@PathVariable String sepcemiterio){
+        return sepulturarepositorio.findBySepcemiterio(sepcemiterio);
+    }
+
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

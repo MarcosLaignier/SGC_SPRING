@@ -12,4 +12,5 @@ public interface sepulturaRepositorio extends JpaRepository<sepulturaModel,Integ
     int findCod();
 
     sepulturaModel findBySepdescricao(String sepdescricao);
+    sepulturaModel[] findBySepcemiterio(String sepcemiterio);
 }
