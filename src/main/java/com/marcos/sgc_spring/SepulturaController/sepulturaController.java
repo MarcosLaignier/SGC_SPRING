@@ -55,6 +55,7 @@ public class sepulturaController {
     public void insert(@RequestBody sepulturaModel dadosSepultura) {
         try {
             sepulturarepositorio.save(dadosSepultura);
+//            return ResponseEntity.accepted().build();
         } catch (DataIntegrityViolationException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }

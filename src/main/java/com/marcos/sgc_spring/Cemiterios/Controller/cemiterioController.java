@@ -62,7 +62,7 @@ public class cemiterioController {
         }
     }
 
-    @ResponseStatus(HttpStatus.ACCEPTED)
+//    @ResponseStatus(HttpStatus.ACCEPTED)
     @DeleteMapping("/{undcodigo}")
     public void delete(@PathVariable int undcodigo) {
         try {
