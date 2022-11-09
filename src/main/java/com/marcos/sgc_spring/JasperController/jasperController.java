@@ -17,7 +17,7 @@ public class jasperController {
     @Autowired
     private jasperService service;
 
-    @GetMapping("/rel/listagemCemiterio/{name}/{geraNovaAba}")
+    @GetMapping("/rel/{name}/{geraNovaAba}")
     public void gerarRelatorioListagemCemiterio(@PathVariable("name") String name,
                                                 @PathVariable("geraNovaAba") String geraNovaAba,
                                                 HttpServletResponse response) throws IOException {

@@ -10,4 +10,6 @@ public interface configuracaoRepositorio extends JpaRepository<configuracaoModel
 
     @Query("select C.SGCMUNICIPIO FROM configuracaoModel C")
     public String findName();
+
+    configuracaoModel findByCODCLIENTE(int CODCLIENTE);
 }

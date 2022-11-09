@@ -24,11 +24,11 @@ public class configuracaoController {
         return configuracaoRepositorio.findAll();
     }
 
-    @PutMapping("/alter/{codCliente}")
-    public ResponseEntity alterNameMunicipio(@PathVariable int codCliente,@RequestBody configuracaoModel dados) {
-        return configuracaoRepositorio.findById(codCliente).map(
+    @PutMapping("/alter/{CODCLIENTE}")
+    public ResponseEntity alterNameMunicipio(@PathVariable int CODCLIENTE,@RequestBody configuracaoModel dados) {
+        return configuracaoRepositorio.findById(CODCLIENTE).map(
                 response -> {
-                    response.setCODCLIENTE(dados.getCODCLIENTE());
+//                    response.setCODCLIENTE(dados.getCODCLIENTE());
                     response.setSGCMUNICIPIO(dados.getSGCMUNICIPIO());
                     response.setSGCPATHIMG(dados.getSGCPATHIMG());
                     response.setSGCPATHLOGO(dados.getSGCPATHLOGO());
