@@ -29,6 +29,7 @@ public class jasperService {
         this.params.put(key,value);
     }
 
+
     public byte[] exportarPDF(String code){
         byte[] bytes = null;
         try {
