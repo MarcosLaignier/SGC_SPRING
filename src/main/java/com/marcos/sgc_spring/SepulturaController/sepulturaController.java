@@ -64,6 +64,7 @@ public class sepulturaController {
     @PutMapping("/alter/{sepcodigo}")
     public ResponseEntity alterSepultura(@PathVariable int sepcodigo, @RequestBody sepulturaModel sepultura) {
         return sepulturarepositorio.findById(sepcodigo).map(
+
                 response -> {
 //                    response.setSepcodigo(sepultura.getSepcodigo());
                     response.setSepdescricao(sepultura.getSepdescricao());
